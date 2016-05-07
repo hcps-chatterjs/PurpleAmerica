@@ -1,14 +1,7 @@
 /*
- * Political Map Project
- * Name: 
- * Block:
- * 
- * Program Purpose:
- *
- * Algorithm:
- * 
- * Future/possible improvements:
- *
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package map;
 import edu.princeton.cs.introcs.*;
@@ -16,13 +9,13 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
 /**
  *
- * @author 
+ * @author hcps-chatterjs
  */
-public class PoliticalMap {
-    public static void main(String[] args) throws FileNotFoundException{;
-        File file = new File("C:\\Users\\hcps-chatterjs\\Documents\\FIFA II\\New FOrk\\PurpleAmerica1\\src\\data\\USA-county.txt");
+public class polygonStates { throws FileNotFoundException{;
+        File file = new File("C:\\Users\\hcps-chatterjs\\Documents\\FIFA II\\New FOrk\\PurpleAmerica1\\src\\data\\TX.txt");
         Scanner scan = new Scanner(file);
         StdDraw.setPenColor(Color.red);
         StdDraw.setCanvasSize(1200, 650);
@@ -37,6 +30,9 @@ public class PoliticalMap {
         StdDraw.setYscale(yMin, yMax);
         double[] xVal;
         double[] yVal;
+        double mouseXVal;
+        double mouseYVal;
+        
         int pointNum = 0;
         
         
@@ -49,30 +45,20 @@ public class PoliticalMap {
                    xVal[j] = scan.nextDouble();
                    yVal[j] = scan.nextDouble();
                 }
-              
-                StdDraw.polygon(xVal, yVal);
                 
-              
             }
-            else{
-                i = i - 1;
-                scan.next();
-            }
-        }
-        while(true) {
-            if(StdDraw.mousePressed()) {
+       
+    
+   }
+        
+        if(StdDraw.mousePressed()) {
                 System.out.println(StdDraw.mouseX() + " " + StdDraw.mouseY());
                 StdDraw.point(StdDraw.mouseX() , StdDraw.mouseY());
-                
-                try {
-                    Thread.sleep(1000);
-                } catch(InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
-        
+                 mouseXVal = StdDraw.mouseX();
+                 mouseYVal = StdDraw.mouseY();
+                 //System.out.println(mouseXVal + " " + mouseYVal);
+  } 
        
-    }
-   
 }
+}
+
