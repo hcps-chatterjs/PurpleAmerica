@@ -8,8 +8,9 @@ import edu.princeton.cs.introcs.*;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 import java.lang.String;
+import java.awt.*;
+import java.util.*;
 
 import edu.princeton.cs.introcs.StdDraw;
 import java.util.logging.Level;
@@ -21,7 +22,9 @@ import java.util.logging.Logger;
  */
 public class MapUI extends javax.swing.JDialog {
     File file;
+    File file2;
     String state;
+    String year;
 
     /**
      * Creates new form MapUI
@@ -47,7 +50,7 @@ public class MapUI extends javax.swing.JDialog {
         createMap = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         electYear = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        electionYear = new javax.swing.JList();
         jScrollPane2 = new javax.swing.JScrollPane();
         mapType = new javax.swing.JList();
         jLabel3 = new javax.swing.JLabel();
@@ -55,8 +58,6 @@ public class MapUI extends javax.swing.JDialog {
         error = new javax.swing.JLabel();
 
         jToggleButton1.setText("jToggleButton1");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Rockwell", 1, 18)); // NOI18N
         jLabel1.setText("Welcome to the Political Map Maker");
@@ -73,13 +74,13 @@ public class MapUI extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Rockwell", 2, 14)); // NOI18N
         jLabel2.setText("Select the characteristics of your map with the options below");
 
-        jList1.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        electionYear.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        electionYear.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "1960", "1964", "1968", "1972", "1976", "1980", "1984", "1988", "1992", "1996", "2000", "2004", "2008", "2012" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        electYear.setViewportView(jList1);
+        electYear.setViewportView(electionYear);
 
         mapType.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         mapType.setModel(new javax.swing.AbstractListModel() {
@@ -102,18 +103,6 @@ public class MapUI extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(53, 53, 53))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(electYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(121, 121, 121))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(103, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,25 +117,34 @@ public class MapUI extends javax.swing.JDialog {
                             .addComponent(createMap)
                             .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(231, 231, 231))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(71, 71, 71)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(electYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(121, 121, 121))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(53, 53, 53))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(electYear, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 8, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                    .addComponent(electYear, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(createMap, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,53 +155,248 @@ public class MapUI extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void createMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createMapActionPerformed
+            Stack allStates = new Stack();
+            String[] allStatesAry;
+            String electionData;
+            String[] dataLine;
+            java.awt.Color stateColor;
+            String subSection;
+            String noRepeat = "";
+            String subName = "";
+            HashMap colorMap = new HashMap();
+            HashMap colorHolder = new HashMap();
+            FillStates phil = new FillStates();
             error.setText("");
             state = String.valueOf(mapType.getSelectedValue());
+            year = String.valueOf(electionYear.getSelectedValue());
             String filePath;
-            if(state.equals(null)){
+            String filePath2;
+            if(state.equals(null) || year.equals(null) || state.equals("") || year.equals("")){
                 error.setText("No State Selected");
             }
             else{
                 filePath = "src/data/" + state + ".txt";
                 file = new File(filePath);
-                
-                Scanner scan;
-                try {
-                    scan = new Scanner(file.getAbsoluteFile());
-                    StdDraw.setCanvasSize(1200, 650);
-                    StdDraw.setPenRadius(0.002);
-                    StdDraw.setPenColor(java.awt.Color.BLACK);
-                    double xMin = scan.nextDouble();
-                    double yMin = scan.nextDouble();
-                    double xMax = scan.nextDouble();
-                    double yMax = scan.nextDouble();
-                    int regionNum = scan.nextInt();
-                    StdDraw.setXscale(xMin, xMax);
-                    StdDraw.setYscale(yMin, yMax);
-                    double[] xVal;
-                    double[] yVal;
-                    int pointNum = 0;
-                    for(int i = 0; i < regionNum; i++){
-                    if(scan.hasNextInt() == true){
-                        pointNum = scan.nextInt();
-                        xVal = new double[pointNum];
-                        yVal = new double[pointNum];
-                        for(int j = 0; j < pointNum; j++){
-                           xVal[j] = scan.nextDouble();
-                           yVal[j] = scan.nextDouble();
+                if(state.equals("USA-county")){
+                    Scanner scan;
+                    String stateSym = "";
+                    try {
+                        scan = new Scanner(file.getAbsoluteFile());
+                        while(scan.hasNext()){
+                            if(scan.hasNextInt() || scan.hasNextDouble()){
+                                scan.nextLine();
+                            }
+                            else{
+                                scan.nextLine();
+                                stateSym = scan.nextLine();
+                                if(stateSym.length() > 2){
+                                    stateSym = scan.nextLine();
+                                }
+                                
+                                if(stateSym.equals(noRepeat)){
+                                    scan.nextLine();
+                                }
+                                else{
+                                    noRepeat = stateSym;
+                                    filePath2 = "src/data/" + stateSym + year + ".txt";
+                                    file2 = new File(filePath2);
+                                    Scanner scan2 = new Scanner(file2.getAbsoluteFile());
+                                    scan2.nextLine();
+                                    int u = 0;
+                                    while(scan2.hasNext()){
+                                        scan2.nextLine();
+                                        u++;
+                                    }
+                                    scan2 = new Scanner(file2.getAbsoluteFile());
+                                    scan2.nextLine();
+                                    for(int i = 0; i < u; i++){
+                                        electionData = scan2.nextLine();
+                                        dataLine = electionData.split(",");
+                                        subSection = dataLine[0];
+                                        int[] voterData = new int[3];
+                                        voterData[0] = Integer.parseInt(dataLine[1]);
+                                        voterData[1] = Integer.parseInt(dataLine[2]);
+                                        voterData[2] = Integer.parseInt(dataLine[3]);
+                                        stateColor = (phil.colorStates(voterData));
+                                        colorHolder.put(subSection.toLowerCase(), stateColor);
+                                        allStates.push(subSection.toLowerCase());
+                                    }
+                                }
+                            }
                         }
-                        StdDraw.polygon(xVal, yVal);
+                        allStatesAry = new String[allStates.size()];
+                        int g = allStates.size();
+                        for(int i = 0; i < g; i++){
+                            allStatesAry[i] = (String)allStates.pop();
+                        }
+                        scan = new Scanner(file.getAbsoluteFile());
+                        StdDraw.setCanvasSize(1200, 650);
+                        StdDraw.setPenRadius(0.002);
+                        StdDraw.setPenColor(java.awt.Color.BLACK);
+                        double xMin = scan.nextDouble();
+                        double yMin = scan.nextDouble();
+                        double xMax = scan.nextDouble();
+                        double yMax = scan.nextDouble();
+                        int regionNum = scan.nextInt();
+                        StdDraw.setXscale(xMin, xMax);
+                        StdDraw.setYscale(yMin, yMax);
+                        double[] xVal;
+                        double[] yVal;
+                        int pointNum = 0;
+                        for(int i = 0; i < regionNum; i++){
+                        if(scan.hasNextInt() == true){
+                            pointNum = scan.nextInt();
+                            xVal = new double[pointNum];
+                            yVal = new double[pointNum];
+                            for(int j = 0; j < pointNum; j++){
+                               xVal[j] = scan.nextDouble();
+                               yVal[j] = scan.nextDouble();
+                            }   
+                            boolean exists = false;
+                            for(int p = 0; p < allStatesAry.length; p++){
+                                if(subName.toLowerCase().equals(allStatesAry[p])){
+                                    exists = true;
+                                }
+                                else{
+
+                                }  
+                            }    
+                            
+                            if(exists == true){
+                                StdDraw.polygon(xVal, yVal);
+                                StdDraw.setPenColor((Color)colorHolder.get(subName.toLowerCase()));
+                                StdDraw.filledPolygon(xVal, yVal);
+                                StdDraw.setPenColor(Color.BLACK);
+                            }
+                            else{
+                                StdDraw.polygon(xVal, yVal);
+                                StdDraw.filledPolygon(xVal, yVal);
+                            }
+                            
+                        }
+                        else{
+                            i = i - 1;
+                            boolean hasInput = false;
+                            subName = scan.nextLine();
+                            while(hasInput == false){
+                                if(subName.equals("")){
+                                    subName = scan.nextLine();
+                                }
+                                else{
+                                    hasInput = true;
+                                }
+                            }
+                            subName = subName.replace(" city", "");
+                            subName = subName.replace(" Parish", "");
+                            scan.nextLine();
+                        }
+                        }
                     }
-                    else{
-                        i = i - 1;
-                        scan.next();
+                    catch (FileNotFoundException ex) {
+                        Logger.getLogger(MapUI.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                else{
+                    filePath2 = "src/data/" + state + year + ".txt";
+                    file2 = new File(filePath2);
+
+
+                    Scanner scan;
+                    Scanner scan2;
+                    try {
+                        scan = new Scanner(file.getAbsoluteFile());
+                        scan2 = new Scanner(file2.getAbsoluteFile());
+                        int u = 0;
+                        scan2.nextLine();
+                        while(scan2.hasNext() == true){
+                            scan2.nextLine();
+                            u++;
+                        }
+                        scan2 = new Scanner(file2.getAbsoluteFile());
+                        String[] stateNames = new String[u];                    
+                        scan2.nextLine();
+                        for(int i = 0; i < u; i++){
+                            electionData = scan2.nextLine();
+                            dataLine = electionData.split(",");
+                            subSection = dataLine[0].toLowerCase();
+                            int[] voterData = new int[3];
+                            voterData[0] = Integer.parseInt(dataLine[1]);
+                            voterData[1] = Integer.parseInt(dataLine[2]);
+                            voterData[2] = Integer.parseInt(dataLine[3]);
+                            colorMap.put(subSection.toLowerCase(), voterData);
+                            stateNames[i] = subSection.toLowerCase();
+                        }
+
+                        StdDraw.setCanvasSize(1200, 650);
+                        StdDraw.setPenRadius(0.002);
+                        StdDraw.setPenColor(java.awt.Color.BLACK);
+                        double xMin = scan.nextDouble();
+                        double yMin = scan.nextDouble();
+                        double xMax = scan.nextDouble();
+                        double yMax = scan.nextDouble();
+                        int regionNum = scan.nextInt();
+                        StdDraw.setXscale(xMin, xMax);
+                        StdDraw.setYscale(yMin, yMax);
+                        double[] xVal;
+                        double[] yVal;
+                        int pointNum = 0;
+                        for(int i = 0; i < regionNum; i++){
+                        if(scan.hasNextInt() == true){
+                            pointNum = scan.nextInt();
+                            xVal = new double[pointNum];
+                            yVal = new double[pointNum];
+                            for(int j = 0; j < pointNum; j++){
+                               xVal[j] = scan.nextDouble();
+                               yVal[j] = scan.nextDouble();
+                            }    
+
+
+                            StdDraw.polygon(xVal, yVal);
+
+                            boolean exists = false;
+                            for(int p = 0; p < stateNames.length; p++){
+                                if(subName.toLowerCase().equals(stateNames[p])){
+                                    exists = true;
+                                }
+                                else{
+
+                                }
+                            }
+
+                            if(exists == true){
+                                stateColor = (phil.colorStates((int[])colorMap.get(subName.toLowerCase())));
+                                StdDraw.setPenColor(stateColor);
+                                StdDraw.filledPolygon(xVal, yVal);
+                                StdDraw.setPenColor(Color.BLACK);
+                            }
+                            else{
+                                StdDraw.polygon(xVal, yVal);
+                                StdDraw.filledPolygon(xVal, yVal);
+                            }
+                        }
+                        else{
+                            i = i - 1;
+                            boolean hasInput = false;
+                            subName = scan.nextLine();
+                            while(hasInput == false){
+                                if(subName.equals("")){
+                                    subName = scan.nextLine();
+                                }
+                                else{
+                                    hasInput = true;
+                                }
+                            }
+                            subName = subName.replace(" city", "");
+                            subName = subName.replace(" Parish", "");
+                            scan.nextLine();
+                        }
+                    }
+                    }
+                    catch (FileNotFoundException ex) {
+                        Logger.getLogger(MapUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-                catch (FileNotFoundException ex) {
-                    Logger.getLogger(MapUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+        }
             
     }//GEN-LAST:event_createMapActionPerformed
 
@@ -254,12 +447,12 @@ public class MapUI extends javax.swing.JDialog {
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton createMap;
     private javax.swing.JScrollPane electYear;
+    private javax.swing.JList electionYear;
     private javax.swing.JLabel error;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JList mapType;
