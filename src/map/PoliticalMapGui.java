@@ -244,13 +244,13 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                                 allStatesAry[i] = (String)allStates.pop();
                             }
                             scan = new Scanner(file.getAbsoluteFile());
-                            daRealDraw.setCanvasSize(1200, 650);
-                            daRealDraw.setPenRadius(0.002);
-                            daRealDraw.setPenColor(java.awt.Color.BLACK);
                             double xMin = scan.nextDouble();
                             double yMin = scan.nextDouble();
                             double xMax = scan.nextDouble();
                             double yMax = scan.nextDouble();
+                            daRealDraw.setCanvasSize(1200, 650);
+                            daRealDraw.setPenRadius(0.002);
+                            daRealDraw.setPenColor(java.awt.Color.BLACK);
                             int regionNum = scan.nextInt();
                             daRealDraw.setXscale(xMin, xMax);
                             daRealDraw.setYscale(yMin, yMax);
@@ -341,13 +341,15 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                                 stateNames[i] = subSection.toLowerCase();
                             }
 
-                            daRealDraw.setCanvasSize(1200, 650);
-                            daRealDraw.setPenRadius(0.002);
-                            daRealDraw.setPenColor(java.awt.Color.BLACK);
                             double xMin = scan.nextDouble();
                             double yMin = scan.nextDouble();
                             double xMax = scan.nextDouble();
                             double yMax = scan.nextDouble();
+                            double xScale = 400/((-1*yMin)-(-1*yMax));
+                            xScale = xScale*(xMax-xMin);
+                            daRealDraw.setCanvasSize((int)xScale, 650);
+                            daRealDraw.setPenRadius(0.002);
+                            daRealDraw.setPenColor(java.awt.Color.BLACK);
                             int regionNum = scan.nextInt();
                             daRealDraw.setXscale(xMin, xMax);
                             daRealDraw.setYscale(yMin, yMax);
@@ -426,10 +428,14 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                 error.setText("No Year Selected!");
             }
             else{
-                if(state.equals("USA") || state.equals("USA-county")){
                     try{
-                        String filePath;
-                        filePath = "src/data/demo/" + year + "demo.txt";
+                        String filePath = "";
+                        if(state.equals("USA") || state.equals("USA-county") || (Integer.parseInt(year) < 2000)){
+                            filePath = "src/data/demo/" + year + "demo.txt";
+                        }
+                        else if(Integer.parseInt(year) >= 2000){
+                            filePath = "src/data/demo/" + state + year + "demo.txt";
+                        }
                         File file = new File(filePath);
                         Scanner scan = new Scanner(file.getAbsoluteFile());
                         daRealDraw.setCanvasSize(520, 340);
@@ -458,7 +464,6 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                         Logger.getLogger(PoliticalMapGui.class.getName()).log(Level.SEVERE, null, ex);     
                     }
                     
-                }
                 
             }       
                    
