@@ -43,21 +43,47 @@
                   </Group>
               </Group>
           </Group>
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
-              <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="createMap" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="error2" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="demographic" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="createMap" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="demographic" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="error" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="electYear" min="-2" pref="85" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="error" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="electYear" min="-2" pref="85" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="117" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="163" max="-2" attributes="0"/>
+                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="141" max="-2" attributes="0"/>
+                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="217" max="-2" attributes="0"/>
+                      <Component id="countyName" min="-2" pref="67" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="199" max="-2" attributes="0"/>
+                      <Component id="drawCounty" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -85,7 +111,16 @@
                       <Component id="error" min="-2" pref="29" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="20" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="countyName" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="drawCounty" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="error2" pref="25" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -133,7 +168,7 @@
               <Font name="Rockwell" size="12" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="52">
+              <StringArray count="51">
                 <StringItem index="0" value="USA"/>
                 <StringItem index="1" value="USA-county"/>
                 <StringItem index="2" value="AL"/>
@@ -146,46 +181,45 @@
                 <StringItem index="9" value="DE"/>
                 <StringItem index="10" value="FL"/>
                 <StringItem index="11" value="GA"/>
-                <StringItem index="12" value="HI"/>
-                <StringItem index="13" value="IN"/>
-                <StringItem index="14" value="IL"/>
-                <StringItem index="15" value="ID"/>
-                <StringItem index="16" value="IA"/>
-                <StringItem index="17" value="KS"/>
-                <StringItem index="18" value="KY"/>
-                <StringItem index="19" value="LA"/>
-                <StringItem index="20" value="ME"/>
-                <StringItem index="21" value="MD"/>
-                <StringItem index="22" value="MA"/>
-                <StringItem index="23" value="MI"/>
-                <StringItem index="24" value="MN"/>
-                <StringItem index="25" value="MS"/>
-                <StringItem index="26" value="MO"/>
-                <StringItem index="27" value="MT"/>
-                <StringItem index="28" value="NE"/>
-                <StringItem index="29" value="NV"/>
-                <StringItem index="30" value="NH"/>
-                <StringItem index="31" value="NJ"/>
-                <StringItem index="32" value="NM"/>
-                <StringItem index="33" value="NY"/>
-                <StringItem index="34" value="NC"/>
-                <StringItem index="35" value="ND"/>
-                <StringItem index="36" value="OH"/>
-                <StringItem index="37" value="OK"/>
-                <StringItem index="38" value="OR"/>
-                <StringItem index="39" value="PA"/>
-                <StringItem index="40" value="RI"/>
-                <StringItem index="41" value="SC"/>
-                <StringItem index="42" value="SD"/>
-                <StringItem index="43" value="TN"/>
-                <StringItem index="44" value="TX"/>
-                <StringItem index="45" value="UT"/>
-                <StringItem index="46" value="VT"/>
-                <StringItem index="47" value="VA"/>
-                <StringItem index="48" value="WA"/>
-                <StringItem index="49" value="WV"/>
-                <StringItem index="50" value="WI"/>
-                <StringItem index="51" value="WY"/>
+                <StringItem index="12" value="IN"/>
+                <StringItem index="13" value="IL"/>
+                <StringItem index="14" value="ID"/>
+                <StringItem index="15" value="IA"/>
+                <StringItem index="16" value="KS"/>
+                <StringItem index="17" value="KY"/>
+                <StringItem index="18" value="LA"/>
+                <StringItem index="19" value="ME"/>
+                <StringItem index="20" value="MD"/>
+                <StringItem index="21" value="MA"/>
+                <StringItem index="22" value="MI"/>
+                <StringItem index="23" value="MN"/>
+                <StringItem index="24" value="MS"/>
+                <StringItem index="25" value="MO"/>
+                <StringItem index="26" value="MT"/>
+                <StringItem index="27" value="NE"/>
+                <StringItem index="28" value="NV"/>
+                <StringItem index="29" value="NH"/>
+                <StringItem index="30" value="NJ"/>
+                <StringItem index="31" value="NM"/>
+                <StringItem index="32" value="NY"/>
+                <StringItem index="33" value="NC"/>
+                <StringItem index="34" value="ND"/>
+                <StringItem index="35" value="OH"/>
+                <StringItem index="36" value="OK"/>
+                <StringItem index="37" value="OR"/>
+                <StringItem index="38" value="PA"/>
+                <StringItem index="39" value="RI"/>
+                <StringItem index="40" value="SC"/>
+                <StringItem index="41" value="SD"/>
+                <StringItem index="42" value="TN"/>
+                <StringItem index="43" value="TX"/>
+                <StringItem index="44" value="UT"/>
+                <StringItem index="45" value="VT"/>
+                <StringItem index="46" value="VA"/>
+                <StringItem index="47" value="WA"/>
+                <StringItem index="48" value="WV"/>
+                <StringItem index="49" value="WI"/>
+                <StringItem index="50" value="WY"/>
               </StringArray>
             </Property>
           </Properties>
@@ -261,6 +295,57 @@
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="33" green="33" red="ff" type="rgb"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel5">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Rockwell" size="14" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Draw Individual Counties"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel6">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Rockwell" size="12" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Enter county name and click draw county"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="countyName">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Rockwell" size="12" style="0"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="countyNameActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="drawCounty">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Rockwell" size="12" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Draw County"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="drawCountyActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="error2">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Rockwell" size="12" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="33" red="33" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
       </Properties>
