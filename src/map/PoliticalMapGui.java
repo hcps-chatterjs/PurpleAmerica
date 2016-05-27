@@ -6,7 +6,6 @@
  *@Authors: Sean LaRochelle
  *@Block: 7
  *@Project: Purple America
- *@Variables:
  *@Methods: main(String[] Args) - Opens GUI
  * PoliticalMapGui - Initializes the class
  * createMapActionPerformed() - Creates a map either the United States or the
@@ -644,6 +643,10 @@ public class PoliticalMapGui extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_countyNameActionPerformed
 
+    /*
+     * Draws the individual counties
+     * @param ActionEvent evt
+     */
     private void drawCountyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawCountyActionPerformed
         error.setText(""); //Resets the error message
         year = String.valueOf(electionYear.getSelectedValue()); //Gets the selected year
