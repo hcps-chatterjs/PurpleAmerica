@@ -2,6 +2,46 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+ *@(#)PoliticalMapGui.java
+ *@Authors: Sean LaRochelle
+ *@Block: 7
+ *@Project: Purple America
+ *@Variables:
+ *@Methods: main(String[] Args) - Opens GUI
+ * PoliticalMapGui - Initializes the class
+ * createMapActionPerformed() - Creates a map either the United States or the
+ * individual states, then colors them based on election data.
+ * demographicActionPerformed - Creates a small page of demographic information
+ * based on the selected year.
+ * drawCountyActionPerformed - Draws and colors the individual counties in the
+ * United States.
+ *
+ *@Review: The code for this project is definitly confusing, but the comments
+ * should help anyone trying to edit or change the code to understand what
+ * exactly the program is doing. Improvements for the code include making the
+ * USA-county map draw quicker and a zoom in feature for the county map. The
+ * code for the project works fine and meets all of the requirements.
+ *
+ *@Algorithm: The first thing that was done on the project was drawing the map without
+ * any color. Once completed, the next step was creating a class to handle creating
+ * custom colors. After completing the class, next step was implementing it.
+ * This was difficult, we managed to get the color working for everything but the counties.
+ * After hours and hours of work, we managed to get it working for the counties. Next, we
+ * worked on getting multiple frames to open up in the program. After converting the JDialog
+ * to a JFrame, the issue was fixed. Next, the states were fixed so they stopped looking
+ * weird when drawn seperatly. We then worked on the extra functionality. The demographic
+ * was added first, then the drawing of the individual counties was added.
+ *
+ *@Basic Description: This program will draw either the United States or the individual
+ * states. The program will then color the states based on election data. The states/counties
+ * that vote more Democratic will be colored more blue/dark purple while states that 
+ * tend to vote more Republican show up as red/light purple. States that voted for the independent
+ * in the corresponding year show up as green.
+ *
+ *Added Functionality: The program will show the demographic data for the country based on the
+ * the selected year. If the year is 2000 or above, then it will show the data for the individual
+ * states. (Sean LaRochelle). This program will also draw the individual counties with the color
+ * that corresponds to the election data. (Saurav Chatterjee).
  */
 package map;
 
@@ -22,10 +62,12 @@ import java.util.logging.Logger;
  * @author hcps-larochesp
  */
 public class PoliticalMapGui extends javax.swing.JFrame {
-    File file;
-    File file2;
-    String state;
-    String year;
+    File file; //Represents the file used for drawing the United States/states
+    File file2; //Represents the file used for coloring the states/counties
+    String state; //Holds the string used to determine what is drawn
+    String year; //Holds the string used to determine what voting data is used
+                //to color the states
+    String county; //Holds the string used to determine the county being drawn
 
     /**
      * Creates new form PoliticalMapGui
@@ -54,6 +96,11 @@ public class PoliticalMapGui extends javax.swing.JFrame {
         createMap = new javax.swing.JButton();
         demographic = new javax.swing.JButton();
         error = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        countyName = new javax.swing.JTextField();
+        drawCounty = new javax.swing.JButton();
+        error2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,7 +117,7 @@ public class PoliticalMapGui extends javax.swing.JFrame {
 
         mapType.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         mapType.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "USA", "USA-county", "AL", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IN", "IL", "ID", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
+            String[] strings = { "USA", "USA-county", "AL", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "IN", "IL", "ID", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -106,6 +153,32 @@ public class PoliticalMapGui extends javax.swing.JFrame {
         error.setForeground(new java.awt.Color(255, 51, 51));
         error.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        jLabel5.setFont(new java.awt.Font("Rockwell", 1, 14)); // NOI18N
+        jLabel5.setText("Draw Individual Counties");
+
+        jLabel6.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        jLabel6.setText("Enter county name and click draw county");
+
+        countyName.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        countyName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                countyNameActionPerformed(evt);
+            }
+        });
+
+        drawCounty.setBackground(new java.awt.Color(255, 0, 0));
+        drawCounty.setFont(new java.awt.Font("Rockwell", 1, 12)); // NOI18N
+        drawCounty.setText("Draw County");
+        drawCounty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drawCountyActionPerformed(evt);
+            }
+        });
+
+        error2.setFont(new java.awt.Font("Rockwell", 1, 12)); // NOI18N
+        error2.setForeground(new java.awt.Color(51, 51, 255));
+        error2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -124,19 +197,37 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                                 .addComponent(jLabel4))
                             .addComponent(jLabel2))
                         .addGap(64, 64, 64))))
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(91, 91, 91)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(createMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(error2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(demographic)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(error, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(electYear, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(createMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(demographic)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(error, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(electYear, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(117, 117, 117))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(163, 163, 163)
+                        .addComponent(jLabel5))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(141, 141, 141)
+                        .addComponent(jLabel6))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(217, 217, 217)
+                        .addComponent(countyName, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(199, 199, 199)
+                        .addComponent(drawCounty)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,315 +250,515 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                         .addComponent(demographic, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(countyName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(drawCounty)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(error2, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This method draws the United States or individual states and colors them based on election data.
+     * @param evt
+     */
     private void createMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createMapActionPerformed
-            error.setText("");
-            state = String.valueOf(mapType.getSelectedValue());
-            year = String.valueOf(electionYear.getSelectedValue());
+            error.setText(""); //Resets the error message
+            state = String.valueOf(mapType.getSelectedValue()); //Gets a String representation
+                                                               //of what state or version of the United States
+                                                              //the user wants to draw
+            year = String.valueOf(electionYear.getSelectedValue()); //Gets a String representation of what
+                                                                   //election year the user wants to base
+                                                                  //the colors on.
             if(state.equals(null) || state.equals("null")){
-                error.setText("No State Selected!");
-            }
+                error.setText("No State Selected!"); //If the user tries to draw the map without selecting
+                                                    //a state, the program will display an error
+            }//End of if statement
             else if(year.equals(null) || year.equals("null")){
-                error.setText("No Year Selected!");
-            }
+                error.setText("No Year Selected!"); //If the user tries to draw the map without selecting a
+                                                   //year, the program will display an error
+            }//End of else if statement
             else{
-                Stack allStates = new Stack();
-                String[] allStatesAry;
-                String electionData;
-                String[] dataLine;
-                java.awt.Color stateColor;
-                String subSection;
-                String noRepeat = "";
-                String subName = "";
-                HashMap colorMap = new HashMap();
-                HashMap colorHolder = new HashMap();
-                FillStates phil = new FillStates();
-                String filePath;
-                String filePath2;
-                    filePath = "src/data/" + state + ".txt";
-                    file = new File(filePath);
+                Draw map = new Draw(); //Creates an instance of the draw class so that the map and
+                                       //demographic data show up on different canvas without
+                                       //without the rescriction of only one canvas being allowed
+                                       //to be open at a time.
+                Stack allStates = new Stack(); //Creates a stack
+                String[] allStatesAry; //Creates an array that will hold all of the states
+                                       //drawn
+                String electionData; //Holds the election data
+                String[] dataLine; //Creates an array that will hold the split version of the
+                                   //electionData String
+                java.awt.Color stateColor; //Object that represents a custom color
+                String subSection; //Object that holds the county name
+                String noRepeat = ""; //String that prevents the same state being counted twice
+                String subName = ""; //String that holds the key used to get the color for the
+                                     //the state.
+                HashMap colorMap = new HashMap(); //HashMap that holds colors for each state
+                                                  //or county
+                HashMap colorHolder = new HashMap(); //HashMap that holds the color for each
+                                                    //county in the United States
+                FillStates phil = new FillStates(); //Initializes the FillStates class
+                String filePath; //String that represents the relative file path of
+                                //the file holding the drawing information
+                String filePath2; //String that represents the relative file path of
+                                 //the file holding the election data
+                    filePath = "src/data/" + state + ".txt"; //Assigns the relative file path
+                                                             //of the file holding the drawing
+                                                             //information
+                    file = new File(filePath); //Creates a file using the relative file path
                     if(state.equals("USA-county")){
+                        //Handles the drawing of the United States with the counties
                         Scanner scan;
-                        String stateSym = "";
+                        String stateSym = ""; //String that holds the abbreviations for each state
                         try {
-                            scan = new Scanner(file.getAbsoluteFile());
+                            scan = new Scanner(file.getAbsoluteFile()); //Creates a scanner based on the relative
+                                                                       //file path. The file's exact path will
+                                                                      //replace the relative file path
                             while(scan.hasNext()){
                                 if(scan.hasNextInt() || scan.hasNextDouble()){
                                     scan.nextLine();
-                                }
+                                    //Skips number input
+                                }//End of if statement
                                 else{
                                     scan.nextLine();
-                                    stateSym = scan.nextLine();
+                                    stateSym = scan.nextLine(); //Gets the state abbreviation
                                     if(stateSym.length() > 2){
-                                        stateSym = scan.nextLine();
-                                    }
+                                        stateSym = scan.nextLine(); //Makes sure the what is held by the String
+                                                                    //is the state abbreviation
+                                    }//End of if statement
 
                                     if(stateSym.equals(noRepeat)){
-                                        scan.nextLine();
-                                    }
+                                        scan.nextLine(); //Makes sure the state is not counted twice
+                                    }//End of if statement
                                     else{
                                         noRepeat = stateSym;
-                                        filePath2 = "src/data/" + stateSym + year + ".txt";
-                                        file2 = new File(filePath2);
-                                        Scanner scan2 = new Scanner(file2.getAbsoluteFile());
+                                        filePath2 = "src/data/" + stateSym + year + ".txt"; //Holds the relative
+                                                                                           //file path of the
+                                                                                          //file that holds the
+                                                                                          //election data
+                                        file2 = new File(filePath2); //Creates a file based on filePath2
+                                        Scanner scan2 = new Scanner(file2.getAbsoluteFile()); //Creates a scanner
+                                                                                             //based on the filePath2.
+                                                                                             //Replaces filePath2 with the
+                                                                                             //exact file path
                                         scan2.nextLine();
-                                        int u = 0;
+                                        int u = 0; //Used to count the number of inputs
                                         while(scan2.hasNext()){
                                             scan2.nextLine();
-                                            u++;
-                                        }
-                                        scan2 = new Scanner(file2.getAbsoluteFile());
+                                            u++; //increments by u by one
+                                        }//End of while loop
+                                        scan2 = new Scanner(file2.getAbsoluteFile()); //Re-initializes the scanner
                                         scan2.nextLine();
                                         for(int i = 0; i < u; i++){
-                                            electionData = scan2.nextLine();
-                                            dataLine = electionData.split(",");
-                                            subSection = dataLine[0];
-                                            int[] voterData = new int[3];
+                                            electionData = scan2.nextLine(); //Grabs the entire line of input
+                                            dataLine = electionData.split(","); //Splits it at every comma
+                                            subSection = dataLine[0]; //Takes the county name
+                                            int[] voterData = new int[3]; //Creates an array to hold the vote numbers
                                             voterData[0] = Integer.parseInt(dataLine[1]);
                                             voterData[1] = Integer.parseInt(dataLine[2]);
                                             voterData[2] = Integer.parseInt(dataLine[3]);
-                                            stateColor = (phil.colorStates(voterData));
-                                            colorHolder.put(subSection.toLowerCase(), stateColor);
-                                            allStates.push(subSection.toLowerCase());
-                                        }
-                                    }
-                                }
-                            }
-                            allStatesAry = new String[allStates.size()];
+                                            stateColor = (phil.colorStates(voterData)); //Creates the custom color
+                                            colorHolder.put(subSection.toLowerCase(), stateColor); //Adds it to the HashMap
+                                            allStates.push(subSection.toLowerCase()); //Adds it to the stack
+                                        }//End of for loop
+                                    }//End of else statement
+                                }//End of else statement
+                            }//End of while statement
+                            allStatesAry = new String[allStates.size()]; //Sets the array to the size of the stack
                             int g = allStates.size();
                             for(int i = 0; i < g; i++){
-                                allStatesAry[i] = (String)allStates.pop();
-                            }
-                            scan = new Scanner(file.getAbsoluteFile());
-                            double xMin = scan.nextDouble();
-                            double yMin = scan.nextDouble();
-                            double xMax = scan.nextDouble();
-                            double yMax = scan.nextDouble();
-                            daRealDraw.setCanvasSize(1200, 650);
-                            daRealDraw.setPenRadius(0.002);
-                            daRealDraw.setPenColor(java.awt.Color.BLACK);
-                            int regionNum = scan.nextInt();
-                            daRealDraw.setXscale(xMin, xMax);
-                            daRealDraw.setYscale(yMin, yMax);
-                            double[] xVal;
-                            double[] yVal;
+                                allStatesAry[i] = (String)allStates.pop(); //Takes the county names is in the stack and 
+                                                                           //places it in the array
+                            }//End of for loop
+                            scan = new Scanner(file.getAbsoluteFile()); //Re-initializes the scanner
+                            double xMin = scan.nextDouble(); //Gets the scale for the min x values
+                            double yMin = scan.nextDouble(); //Gets the scale for the min y values
+                            double xMax = scan.nextDouble(); //Gets the scale for the max x values
+                            double yMax = scan.nextDouble(); //Gets the scale for the max y values
+                            map.setCanvasSize(1200, 650); //Sets the canvas size
+                            map.setPenRadius(0.002); //Sets the size of the border
+                            map.setPenColor(java.awt.Color.BLACK); //Sets the color
+                            int regionNum = scan.nextInt(); //Gets the number of regions that need to be drawn
+                            map.setXscale(xMin, xMax); //Sets the x scale
+                            map.setYscale(yMin, yMax); //Sets the y scale
+                            double[] xVal; //Creates an array that will hold the x values
+                            double[] yVal; //Creates an array that will hold the y values
                             int pointNum = 0;
                             for(int i = 0; i < regionNum; i++){
                             if(scan.hasNextInt() == true){
-                                pointNum = scan.nextInt();
-                                xVal = new double[pointNum];
-                                yVal = new double[pointNum];
+                                pointNum = scan.nextInt(); //Gets the number of coordinates that need to be accounted for
+                                xVal = new double[pointNum]; //Sets the size of the array
+                                yVal = new double[pointNum]; //Sets the size of the array
                                 for(int j = 0; j < pointNum; j++){
-                                   xVal[j] = scan.nextDouble();
-                                   yVal[j] = scan.nextDouble();
-                                }   
-                                boolean exists = false;
+                                   xVal[j] = scan.nextDouble(); //Gets the x values
+                                   yVal[j] = scan.nextDouble(); //Gets the y values
+                                } //End of for loop   
+                                boolean exists = false; //Variable that states whether the county exists
                                 for(int p = 0; p < allStatesAry.length; p++){
                                     if(subName.toLowerCase().equals(allStatesAry[p])){
-                                        exists = true;
-                                    }
+                                        exists = true; //Checks to see if the county exists in the given year
+                                    }//End of if statement
                                     else{
-
-                                    }  
-                                }    
+                                        //The IDE kept complaining till I added this :(
+                                    }//End of else statement  
+                                } //End of for loop    
 
                                 if(exists == true){
-                                    daRealDraw.polygon(xVal, yVal);
-                                    daRealDraw.setPenColor((Color)colorHolder.get(subName.toLowerCase()));
-                                    daRealDraw.filledPolygon(xVal, yVal);
-                                    daRealDraw.setPenColor(Color.BLACK);
-                                }
+                                    map.polygon(xVal, yVal); //Draws a polygon based on the arrays
+                                    map.setPenColor((Color)colorHolder.get(subName.toLowerCase())); //Sets the pen color
+                                                                                                  //to the corresponding color
+                                                                                                  //of the county
+                                    map.filledPolygon(xVal, yVal); //Fills the polygon with the color
+                                    map.setPenColor(Color.BLACK); //Sets the pen color bacl to black
+                                } //End of if statement
                                 else{
-                                    daRealDraw.polygon(xVal, yVal);
-                                    daRealDraw.filledPolygon(xVal, yVal);
-                                }
+                                    map.polygon(xVal, yVal); //If the county does not exist, the program will color
+                                                            //it black
+                                    map.filledPolygon(xVal, yVal);
+                                }//End of else statement
 
-                            }
+                            }//end of if statement
                             else{
-                                i = i - 1;
-                                boolean hasInput = false;
-                                subName = scan.nextLine();
+                                i = i - 1; //Does not count any input that is text
+                                boolean hasInput = false; //Used to determine whether there is any input
+                                subName = scan.nextLine(); //Gets the county name
                                 while(hasInput == false){
                                     if(subName.equals("")){
                                         subName = scan.nextLine();
-                                    }
+                                        //Checks to make sure the input is not blank
+                                    }//End of if statement
                                     else{
                                         hasInput = true;
-                                    }
-                                }
-                                subName = subName.replace(" city", "");
-                                subName = subName.replace(" Parish", "");
+                                    }//End of else statement
+                                }//End of while statement
+                                subName = subName.replace(" city", ""); //Removes city from any county name
+                                subName = subName.replace(" Parish", ""); //Removes parish from any county name
                                 scan.nextLine();
-                            }
-                            }
-                        }
+                            }//End of else statement
+                            }//End of for loop
+                        }//End of try
                         catch (FileNotFoundException ex) {
                             Logger.getLogger(PoliticalMapGui.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
+                            //Catches the FileNotFoundException
+                        }//End of catch
+                    }//End of if statement
                     else{
-                        filePath2 = "src/data/" + state + year + ".txt";
-                        file2 = new File(filePath2);
+                        filePath2 = "src/data/" + state + year + ".txt"; //Creates a relative file path
+                                                                        //for the individual states/UnitedStates
+                        file2 = new File(filePath2); //Creates a file based on filePath2
 
 
                         Scanner scan;
                         Scanner scan2;
                         try {
-                            scan = new Scanner(file.getAbsoluteFile());
-                            scan2 = new Scanner(file2.getAbsoluteFile());
-                            int u = 0;
+                            scan = new Scanner(file.getAbsoluteFile()); //Creates a scanner based on the relative file path.
+                                                                        //Replaces the relative path with the absolute path
+                            scan2 = new Scanner(file2.getAbsoluteFile()); //Creates a scanner based on the relative file path.
+                                                                          //Replaces the relative path with the absolute path
+                            int u = 0; //Used to count the number of inputs
                             scan2.nextLine();
                             while(scan2.hasNext() == true){
                                 scan2.nextLine();
-                                u++;
-                            }
-                            scan2 = new Scanner(file2.getAbsoluteFile());
-                            String[] stateNames = new String[u];                    
+                                u++; //Increments u by one
+                            }//End of while statement
+                            scan2 = new Scanner(file2.getAbsoluteFile()); //Re-initializes the scanner
+                            String[] stateNames = new String[u]; //Creates an array with size u                    
                             scan2.nextLine();
                             for(int i = 0; i < u; i++){
-                                electionData = scan2.nextLine();
-                                dataLine = electionData.split(",");
-                                subSection = dataLine[0].toLowerCase();
-                                int[] voterData = new int[3];
+                                electionData = scan2.nextLine(); //Gets the next line of input
+                                dataLine = electionData.split(","); //Splits the input at every comma
+                                subSection = dataLine[0].toLowerCase(); //Gets the county/state name
+                                int[] voterData = new int[3]; //Creates an array that holds the votes
                                 voterData[0] = Integer.parseInt(dataLine[1]);
                                 voterData[1] = Integer.parseInt(dataLine[2]);
                                 voterData[2] = Integer.parseInt(dataLine[3]);
-                                colorMap.put(subSection.toLowerCase(), voterData);
-                                stateNames[i] = subSection.toLowerCase();
-                            }
+                                colorMap.put(subSection.toLowerCase(), voterData); //Gets the corresponding color for each state
+                                                                                   //county
+                                stateNames[i] = subSection.toLowerCase(); //Adds the state/county name to the array
+                            }//End of for loop
 
-                            double xMin = scan.nextDouble();
-                            double yMin = scan.nextDouble();
-                            double xMax = scan.nextDouble();
-                            double yMax = scan.nextDouble();
-                            double xScale = 400/((-1*yMin)-(-1*yMax));
-                            xScale = xScale*(xMax-xMin);
-                            daRealDraw.setCanvasSize((int)xScale, 650);
-                            daRealDraw.setPenRadius(0.002);
-                            daRealDraw.setPenColor(java.awt.Color.BLACK);
-                            int regionNum = scan.nextInt();
-                            daRealDraw.setXscale(xMin, xMax);
-                            daRealDraw.setYscale(yMin, yMax);
-                            double[] xVal;
-                            double[] yVal;
+                            double xMin = scan.nextDouble(); //Gets the min x scale
+                            double yMin = scan.nextDouble(); //Gets the min y scale
+                            double xMax = scan.nextDouble(); //Gets the max x scale
+                            double yMax = scan.nextDouble(); //Gets the max y scale
+                            double xScale = 400/((-1*yMin)-(-1*yMax)); //Sets the x relative to the state
+                            xScale = xScale*(xMax-xMin); //**Sets the x relative to the state
+                            map.setCanvasSize((int)xScale, 650); //Sets the canvas size
+                            map.setPenRadius(0.002); //Sets the border width
+                            map.setPenColor(java.awt.Color.BLACK); //Sets the pen color
+                            int regionNum = scan.nextInt(); //Gets the number regions that need to be drawn
+                            map.setXscale(xMin, xMax); //Sets the x scale
+                            map.setYscale(yMin, yMax); //Sets the y scale
+                            double[] xVal; //Creates an array that holds the x values
+                            double[] yVal; //Creates an array that holds the y values
                             int pointNum = 0;
                             for(int i = 0; i < regionNum; i++){
                             if(scan.hasNextInt() == true){
-                                pointNum = scan.nextInt();
-                                xVal = new double[pointNum];
-                                yVal = new double[pointNum];
+                                pointNum = scan.nextInt(); //Gets the number of coordinates that need to be accounted for
+                                xVal = new double[pointNum]; //Sets the array size
+                                yVal = new double[pointNum]; //Sets the 
                                 for(int j = 0; j < pointNum; j++){
-                                   xVal[j] = scan.nextDouble();
-                                   yVal[j] = scan.nextDouble();
-                                }    
+                                   xVal[j] = scan.nextDouble(); //Gets the x values
+                                   yVal[j] = scan.nextDouble(); //Gets the y values
+                                }//End of for loop    
 
 
-                                daRealDraw.polygon(xVal, yVal);
+                                map.polygon(xVal, yVal); //Draws a polygon based on the coordinates
 
-                                boolean exists = false;
+                                boolean exists = false; //Keeps track of whether the counties exists
                                 for(int p = 0; p < stateNames.length; p++){
                                     if(subName.toLowerCase().equals(stateNames[p])){
                                         exists = true;
-                                    }
+                                        //Checks to see if the county exists
+                                    }//End of if statement
                                     else{
 
-                                    }
-                                }
+                                    }//End of else statement
+                                }//End of for loop
 
                                 if(exists == true){
                                     stateColor = (phil.colorStates((int[])colorMap.get(subName.toLowerCase())));
-                                    daRealDraw.setPenColor(stateColor);
-                                    daRealDraw.filledPolygon(xVal, yVal);
-                                    daRealDraw.setPenColor(Color.BLACK);
-                                }
+                                        //Gets the custom color for each county/state
+                                    map.setPenColor(stateColor); //Sets the pen color to the custom color
+                                    map.filledPolygon(xVal, yVal); //Fills the polygon
+                                    map.setPenColor(Color.BLACK); //Sets the color back to black
+                                }//End of if statement
                                 else{
-                                    daRealDraw.polygon(xVal, yVal);
-                                    daRealDraw.filledPolygon(xVal, yVal);
-                                }
-                            }
+                                    map.filledPolygon(xVal, yVal); //Files the polygon black if the county does not exist
+                                }//End of else statement
+                            }//End of if statement
                             else{
-                                i = i - 1;
-                                boolean hasInput = false;
-                                subName = scan.nextLine();
+                                i = i - 1; //Does not count text input
+                                boolean hasInput = false; //Keeps track of whether there is any input
+                                subName = scan.nextLine(); //Gets the county/state name
                                 while(hasInput == false){
                                     if(subName.equals("")){
                                         subName = scan.nextLine();
-                                    }
+                                        //Makes sure the input is not blank
+                                    }//End of if statement
                                     else{
                                         hasInput = true;
-                                    }
-                                }
-                                subName = subName.replace(" city", "");
-                                subName = subName.replace(" Parish", "");
+                                    }//End of else statement
+                                }//End of while loop
+                                subName = subName.replace(" city", ""); //Removes city from the county names
+                                subName = subName.replace(" Parish", ""); //Removes parish from the county names
                                 scan.nextLine();
-                            }
-                        }
-                        }
+                            }//End of else statement
+                        }//End of for loop
+                        }//End of try
                         catch (FileNotFoundException ex) {
                             Logger.getLogger(PoliticalMapGui.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }       
+                            //Catches FileNotFoundException
+                        }//End of catch
+                    }//End of else statement       
                    
-               }
+               }//End of else statement
 
     }//GEN-LAST:event_createMapActionPerformed
 
+    /**
+     * Shows the demographic data for either the state or country based on year
+     * @param evt 
+     */
     private void demographicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_demographicActionPerformed
-            error.setText("");
-            state = String.valueOf(mapType.getSelectedValue());
-            year = String.valueOf(electionYear.getSelectedValue());
+            error.setText(""); //Resets the error message
+            state = String.valueOf(mapType.getSelectedValue()); //Gets the name of the state or country the user wants the
+                                                                //demographic information for
+            year = String.valueOf(electionYear.getSelectedValue()); //Gets the year the user wants to base the demographic 
+                                                                    //information on
             if(state.equals(null) || state.equals("null")){
                 error.setText("No State Selected!");
-            }
+                //If the user fails to select a state, an error message will pop up
+            }//End of if statement
             else if(year.equals(null) || year.equals("null")){
                 error.setText("No Year Selected!");
-            }
+                //If the user fails to select a year, an error message will pop up
+            }//End of else if statement
             else{
+                Draw demograph = new Draw(); //Creates an instance of the draw class so that the map and
+                                            //demographic data show up on different canvas without
+                                            //without the rescriction of only one canvas being allowed
+                                            //to be open at a time.
                     try{
                         String filePath = "";
                         if(state.equals("USA") || state.equals("USA-county") || (Integer.parseInt(year) < 2000)){
                             filePath = "src/data/demo/" + year + "demo.txt";
-                        }
+                            //If the user selects the entire country or a year inwhich the state data could not be
+                            //found, the program will get a relative file path to a file that holds election data
+                            //of the corresponding year for the entire country
+                        }//End of if statement
                         else if(Integer.parseInt(year) >= 2000){
                             filePath = "src/data/demo/" + state + year + "demo.txt";
-                        }
-                        File file = new File(filePath);
-                        Scanner scan = new Scanner(file.getAbsoluteFile());
-                        daRealDraw.setCanvasSize(520, 340);
-                        daRealDraw.setPenRadius(0.002);
-                        daRealDraw.setPenColor(java.awt.Color.BLACK);
-                        Font style = new Font("Arial", Font.BOLD, 14);
-                        daRealDraw.setFont(style);
-                        daRealDraw.text(0.3, 0.9, scan.nextLine());
-                        style = new Font("Arial", Font.PLAIN, 14);
-                        daRealDraw.setFont(style);
-                        int y = 8;
+                            //If the user selects a state and there is avaiable demographic data found,
+                            //the program will get a relative file path to a file that holds the election data
+                            //of the corresponding year for the entire county
+                        }//End of else if statement
+                        File file = new File(filePath);//Creates a file based on filePath
+                        Scanner scan = new Scanner(file.getAbsoluteFile());//Creates a scanner using the relative file path.
+                                                                          //The relative file path is replaced with the
+                                                                          //absolute file path
+                        demograph.setCanvasSize(520, 340); //Sets the canvas size
+                        demograph.setPenRadius(0.002); //Sets the border width
+                        demograph.setPenColor(java.awt.Color.BLACK); //Sets the color to black
+                        Font style = new Font("Arial", Font.BOLD, 14); //Creates a custom font
+                        demograph.setFont(style); //Sets the font to the custom font
+                        demograph.text(0.5, 0.9, scan.nextLine()); //Outputs the title to the canvas
+                        demograph.text(0.5, 0.8, scan.nextLine());
+                        style = new Font("Arial", Font.PLAIN, 14); //Creates a custom font
+                        demograph.setFont(style); //Sets the font to the custom font
+                        int y = 7; //Sets y to 8 instead of 0.8 because doubles add and subtract weirdly
                         int x = 3;
                         while(scan.hasNext() == true){
                             if(y == 0){
                                 x = x + 4;
-                                y = 9;
-                            }
+                                y = 7;
+                                //Basically moves the input to another column when it reaches the bottom of the canvas
+                            }//End of if statement
                             else{
-                                daRealDraw.text((double)x/10, (double)y/10, scan.nextLine());
+                                demograph.text((double)x/10, (double)y/10, scan.nextLine());
                                 y = y - 1;
-                            }
-                        }
+                                //Outputs the demographic data to the canvas
+                            }//End of else statement
+                        }//End of while loop
                         
-                    }
+                    }//End of try
                     catch (FileNotFoundException ex) {
-                        Logger.getLogger(PoliticalMapGui.class.getName()).log(Level.SEVERE, null, ex);     
-                    }
+                        Logger.getLogger(PoliticalMapGui.class.getName()).log(Level.SEVERE, null, ex);    
+                        //Catches FileNotFoundException
+                    }//End of catch
                     
                 
-            }       
+            }//End of else statement       
                    
     }//GEN-LAST:event_demographicActionPerformed
+
+    private void countyNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countyNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_countyNameActionPerformed
+
+    private void drawCountyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawCountyActionPerformed
+        error.setText(""); //Resets the error message
+        year = String.valueOf(electionYear.getSelectedValue()); //Gets the selected year
+        county = String.valueOf(countyName.getText()).toLowerCase(); //Gets the county name entered by the user
+        county = county.replace(" city", ""); //Removes the word city from the user input
+        county = county.replace(" parish", ""); //Removes the word parish from the user input
+        county = county.trim();//Removes any spaces at the beginning or end of the String
+        state = String.valueOf(mapType.getSelectedValue()); //Gets the selected state
+        if(year.equals("") || year.equals("null") || year.equals(null)){
+            error.setText("No year selected");
+            //If the user does not enter a year, the program will display an error
+        }//End of if statement
+        else if(county.equals("") || county.equals(null) || county.equals("null")){
+            error.setText("No county entered");
+            //If the user does not enter a county, the program will display an error
+        }//End of else if statement
+        else if(county.equals("district of columbia")){
+            error.setText("DC not counted");
+            //If the user enters DC, the program will inform the user that DC is not valid.
+        }//End of else if statement
+        else if(state.equals("null")){
+            error.setText("No state selected");
+            //If the user does not select a state, the program will display an error
+        }//End of else if statement
+        else{
+            try{
+                if(state.equals("USA") || state.equals("USA-county")){
+                    error2.setText("Invalid Input");
+                    //If the user selects USA as the state, the program will inform the user that it is an invalid input
+                }//End of if statement
+                else{
+                    String filePath = "src/data/" + state + ".txt"; //Creates a relative file path
+                    String filePath2 = "src/data/" + state + year + ".txt"; //Creates a relative file path
+                    file = new File(filePath); //Creates a File based on the relative File path
+                    Scanner scan = new Scanner(file.getAbsoluteFile()); //Creates a Scanner based on the relative file path and
+                                                                        //replaces the relative path with the absolute path
+                    file2 = new File(filePath2); //Creates a File based on the relative File path
+                    double xMin = scan.nextDouble(); //Gets the min x scale
+                    double yMin = scan.nextDouble(); //Gets the min y scale
+                    double xMax = scan.nextDouble(); //Gets the max x scale
+                    double yMax = scan.nextDouble(); //Gets the max y scale
+                    boolean badInput = true; //Keeps track of whether the user's input is invalid
+                    scan.next();
+                    while(scan.hasNext()){
+                        String line = scan.nextLine().toLowerCase();
+                        line = line.replaceAll(" city", ""); //Removes the word city from the input from file
+                        line = line.replaceAll(" parish", ""); //Removes the word parish from the input file
+                        if(county.equals(line)){
+                            Scanner scan2 = new Scanner(file2.getAbsoluteFile()); //Creates a Scanner based on the relative file path
+                                                                                 //and replaces the relative path the absolute path
+                            Draw countyMap = new Draw(); //Initializes an instance of the Draw class
+                            countyMap.setCanvasSize(500, 500); //Sets the canvas size
+                            countyMap.setPenRadius(0.002); //Sets the border width
+                            countyMap.setPenColor(java.awt.Color.BLACK); //Sets the pen color
+                            countyMap.setXscale(xMin, xMax); //Sets the x scale
+                            countyMap.setYscale(yMin, yMax); //Sets the y scale
+                            badInput = false; //Tells the program that input is valid
+                            scan.nextLine();
+                            int j = scan.nextInt();
+                            double xVal[] = new double[j]; //Creates an array that will hold the x values
+                            double yVal[] = new double[j]; //Creates an array that will hold the y values
+                            for(int i = 0; i < j; i++){
+                                xVal[i] = scan.nextDouble(); //Puts the x values into the array
+                                yVal[i] = scan.nextDouble(); //Puts the y values into the array
+                            }//End of for loop
+                            countyMap.polygon(xVal, yVal); //Draws the county
+
+                            String electionData;
+                            String[] dataLine;
+                            String countyLine;
+                            boolean exists = false; //Keeps track of whether the state existed in the corresponding year
+                            java.awt.Color colour = new java.awt.Color(0,0,0); //Creates a new color
+                            scan2.nextLine();
+                            while(scan2.hasNext()){
+                                electionData = scan2.nextLine(); //Gets the next line of input
+                                dataLine = electionData.split(","); //Splits the input at every comma
+                                countyLine = dataLine[0].toLowerCase(); //Gets the county name
+                                FillStates phil = new FillStates(); //Creates an instance of FillStates
+                                if(county.equals(countyLine)){
+                                    int[] voterData = new int[3]; //Creates an array that holds the votes
+                                    voterData[0] = Integer.parseInt(dataLine[1]);
+                                    voterData[1] = Integer.parseInt(dataLine[2]);
+                                    voterData[2] = Integer.parseInt(dataLine[3]);
+                                    colour = phil.colorStates(voterData); //Creates a custom color
+                                    exists = true; //Tells the program that county existed in the given year
+                                }//End of if statement
+                            }//End of while loop
+                            if(exists == false){
+                                countyMap.setPenColor(java.awt.Color.BLACK);
+                                countyMap.filledPolygon(xVal, yVal);
+                                error2.setText("Note: county does not exist in given year");
+                                //If the county name can't be found in the file, the program will
+                                //state that the county did not exist in the given year and color it
+                                //black.
+                            }//End of if statement
+                            else{
+                                countyMap.setPenColor(colour);
+                                countyMap.filledPolygon(xVal, yVal);
+                                //Sets the pen color to the custom color and colors the state with that color
+                            }//End of else statement
+                        }//End of if statement
+                    }//End of while loop  
+                    if(badInput == true){
+                        error2.setText("Invalid Input");
+                        //Tells the user if their input is invalid
+                    }//End of if statement
+                }//End of else statement
+                
+            }//End of try statement
+            catch (FileNotFoundException ex) {
+                Logger.getLogger(PoliticalMapGui.class.getName()).log(Level.SEVERE, null, ex);    
+                //Catches FileNotFoundException
+            }//End of catch
+        }//End of else statement
+    }//GEN-LAST:event_drawCountyActionPerformed
 
     /**
      * @param args the command line arguments
@@ -505,15 +796,20 @@ public class PoliticalMapGui extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField countyName;
     private javax.swing.JButton createMap;
     private javax.swing.JButton demographic;
+    private javax.swing.JButton drawCounty;
     private javax.swing.JScrollPane electYear;
     private javax.swing.JList electionYear;
     private javax.swing.JLabel error;
+    private javax.swing.JLabel error2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList mapType;
     // End of variables declaration//GEN-END:variables
