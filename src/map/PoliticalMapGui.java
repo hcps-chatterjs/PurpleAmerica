@@ -15,6 +15,12 @@
  * drawCountyActionPerformed - Draws and colors the individual counties in the
  * United States.
  *
+ *@Variables: file - Holds the file that is used to draw the states and counties.
+ * file2 - Holds the file that holds the election data.
+ * year - Holds the selected year
+ * state - Holds the selected object that is drawn.
+ * county - Holds the user's inputted county.
+ *
  *@Review: The code for this project is definitly confusing, but the comments
  * should help anyone trying to edit or change the code to understand what
  * exactly the program is doing. Improvements for the code include making the
