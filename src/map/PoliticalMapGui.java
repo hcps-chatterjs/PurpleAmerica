@@ -15,6 +15,12 @@
  * drawCountyActionPerformed - Draws and colors the individual counties in the
  * United States.
  *
+ *@Variables: file - Holds the file that is used to draw the states and counties.
+ * file2 - Holds the file that holds the election data.
+ * year - Holds the selected year
+ * state - Holds the selected object that is drawn.
+ * county - Holds the user's inputted county.
+ *
  *@Review: The code for this project is definitly confusing, but the comments
  * should help anyone trying to edit or change the code to understand what
  * exactly the program is doing. Improvements for the code include making the
@@ -116,7 +122,7 @@ public class PoliticalMapGui extends javax.swing.JFrame {
 
         mapType.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         mapType.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "USA", "USA-county", "AL", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "IN", "IL", "ID", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
+            String[] strings = { "USA", "USA-county", "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "IN", "IL", "ID", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -269,7 +275,7 @@ public class PoliticalMapGui extends javax.swing.JFrame {
      * @param evt
      */
     private void createMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createMapActionPerformed
-            error.setText(""); //Resets the error message
+ error.setText(""); //Resets the error message
             state = String.valueOf(mapType.getSelectedValue()); //Gets a String representation
                                                                //of what state or version of the United States
                                                               //the user wants to draw
@@ -321,6 +327,7 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                             scan = new Scanner(file.getAbsoluteFile()); //Creates a scanner based on the relative
                                                                        //file path. The file's exact path will
                                                                       //replace the relative file path
+                            
                             while(scan.hasNext()){
                                 if(scan.hasNextInt() || scan.hasNextDouble()){
                                     scan.nextLine();
@@ -386,8 +393,14 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                             map.setPenRadius(0.002); //Sets the size of the border
                             map.setPenColor(java.awt.Color.BLACK); //Sets the color
                             int regionNum = scan.nextInt(); //Gets the number of regions that need to be drawn
+                            if(filePath == "src/data/" + "AK" + ".txt"){
+                                map.setXscale(-180,-10);
+                                map.setYscale(50,150);//so that the state will appear at the bottom of the map
+                            }
+                            else{
                             map.setXscale(xMin, xMax); //Sets the x scale
                             map.setYscale(yMin, yMax); //Sets the y scale
+                            }
                             double[] xVal; //Creates an array that will hold the x values
                             double[] yVal; //Creates an array that will hold the y values
                             int pointNum = 0;
@@ -400,6 +413,7 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                                    xVal[j] = scan.nextDouble(); //Gets the x values
                                    yVal[j] = scan.nextDouble(); //Gets the y values
                                 } //End of for loop   
+                                
                                 boolean exists = false; //Variable that states whether the county exists
                                 for(int p = 0; p < allStatesAry.length; p++){
                                     if(subName.toLowerCase().equals(allStatesAry[p])){
@@ -443,12 +457,21 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                                 scan.nextLine();
                             }//End of else statement
                             }//End of for loop
+                            
+                            
+
+                            
+                            
+                            
                         }//End of try
+                        
                         catch (FileNotFoundException ex) {
                             Logger.getLogger(PoliticalMapGui.class.getName()).log(Level.SEVERE, null, ex);
                             //Catches the FileNotFoundException
                         }//End of catch
                     }//End of if statement
+                    
+                    
                     else{
                         filePath2 = "src/data/" + state + year + ".txt"; //Creates a relative file path
                                                                         //for the individual states/UnitedStates
@@ -488,17 +511,58 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                             double yMin = scan.nextDouble(); //Gets the min y scale
                             double xMax = scan.nextDouble(); //Gets the max x scale
                             double yMax = scan.nextDouble(); //Gets the max y scale
+                           
                             double xScale = 400/((-1*yMin)-(-1*yMax)); //Sets the x relative to the state
+
                             xScale = xScale*(xMax-xMin); //**Sets the x relative to the state
-                            map.setCanvasSize((int)xScale, 650); //Sets the canvas size
+                            map.setCanvasSize((int)xScale, 650); //Sets the canvas size                             if(state.equals("AK")){
+                            if(state.equals("AK")){//if user selects Alaska as the state
+                                xScale = 400;
+                                map.setCanvasSize((int)xScale, 400);
+                                //Handles if the user selects Alaska
+                                }//End of if statement
+                         
+                            else{ 
+                                map.setCanvasSize((int)xScale, 650); //Sets the canvas size
+                            }//End of else statement
                             map.setPenRadius(0.002); //Sets the border width
                             map.setPenColor(java.awt.Color.BLACK); //Sets the pen color
                             int regionNum = scan.nextInt(); //Gets the number regions that need to be drawn
+                            if(state.equals("AK")){
+                                map.setXscale(-180,-10);
+                                map.setYscale(50,150);//new scale so that Alaska can be put into proportion
+                            }
+                            else if(state.equals("HI")){
+                                map.setXscale(-200,-66);
+                                map.setYscale(24,50.5);//new scale for drawing Hawaii bc the coordinates are so big
+                            }
+                            else{
                             map.setXscale(xMin, xMax); //Sets the x scale
                             map.setYscale(yMin, yMax); //Sets the y scale
+                            }
                             double[] xVal; //Creates an array that holds the x values
                             double[] yVal; //Creates an array that holds the y values
                             int pointNum = 0;
+                            if(state.equals("HI")){//Different case for Hawaii because counties are numbers
+                                for(int i = 0; i < regionNum; i++){
+                                    if(scan.next() == "HI"){//cannot see if there is an int because ints are counties
+                                        scan.next();//skips HI text
+                                    pointNum = scan.nextInt();//Gets the number of coordinates that need to be accounted for
+                                    xVal = new double[pointNum];//Sets the array size
+                                    yVal = new double[pointNum];//Sets the array size
+                                    for(int j = 0; j < pointNum; j++){
+                                   xVal[j] = scan.nextDouble(); //Gets the x values
+                                   yVal[j] = scan.nextDouble(); //Gets the y values
+                                    
+                                }//End of for loop    
+                                    
+
+                                map.polygon(xVal, yVal); //Draws a polygon based on the coordinates
+                                map.filledPolygon(xVal, yVal);
+                                }
+                                }
+                            } 
+                            else{
                             for(int i = 0; i < regionNum; i++){
                             if(scan.hasNextInt() == true){
                                 pointNum = scan.nextInt(); //Gets the number of coordinates that need to be accounted for
@@ -552,6 +616,12 @@ public class PoliticalMapGui extends javax.swing.JFrame {
                                 scan.nextLine();
                             }//End of else statement
                         }//End of for loop
+                       }
+                            
+                            
+                                               
+                                                        
+                            
                         }//End of try
                         catch (FileNotFoundException ex) {
                             Logger.getLogger(PoliticalMapGui.class.getName()).log(Level.SEVERE, null, ex);
